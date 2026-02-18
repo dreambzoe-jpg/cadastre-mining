@@ -32,6 +32,9 @@ export default function App() {
       <nav className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
+            <a href="#contact" className="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-amber-800 transition-all shadow-lg shadow-slate-900/10 hidden md:block">
+              Get in Touch
+            </a>
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight text-slate-900">Cadastre Mining Compliance</span>
               <span className="text-xs uppercase tracking-widest text-amber-700 font-semibold">Strategic Advisory</span>
@@ -39,9 +42,6 @@ export default function App() {
             <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
               <a href="#specializations" className="hover:text-amber-700 transition-colors">Specializations</a>
               <a href="#approach" className="hover:text-amber-700 transition-colors">Operational Approach</a>
-              <a href="#contact" className="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-amber-800 transition-all shadow-lg shadow-slate-900/10">
-                Get in Touch
-              </a>
             </div>
           </div>
         </div>
