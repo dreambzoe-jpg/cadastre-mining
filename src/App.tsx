@@ -139,19 +139,21 @@ export default function App() {
                   num: '04',
                 },
               ].map((svc) => (
-                <div key={svc.title} className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 border-b-2 border-b-slate-100 hover:shadow-xl hover:bg-gradient-to-b hover:from-white hover:to-amber-50 hover:border-b-amber-700 transition-all duration-300 group fade-in">
-                  <div className="mb-2">
-                    <span className="text-2xl font-bold text-amber-700">{svc.num}</span>
+                <a href="#contact" key={svc.title} className="group no-underline">
+                  <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 border-b-2 border-b-slate-100 hover:shadow-xl hover:bg-gradient-to-b hover:from-white hover:to-amber-50 hover:border-b-amber-700 transition-all duration-300 cursor-pointer h-full flex flex-col fade-in">
+                    <div className="mb-2">
+                      <span className="text-2xl font-bold text-amber-700">{svc.num}</span>
+                    </div>
+                    <div className="text-amber-700 mb-6 bg-amber-50 w-16 h-16 flex items-center justify-center rounded-lg group-hover:bg-amber-700 group-hover:text-white transition-colors">
+                      <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">{svc.icon}</svg>
+                    </div>
+                    <h3 className="text-xl font-bold mb-3 text-slate-800">{svc.title}</h3>
+                    <p className="text-slate-600 leading-relaxed text-sm mb-5 flex-grow">{svc.desc}</p>
+                    <div className="inline-flex items-center text-amber-700 font-semibold text-sm group-hover:text-amber-800 transition-colors">
+                      Get in touch <span className="ml-1 inline-block group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    </div>
                   </div>
-                  <div className="text-amber-700 mb-6 bg-amber-50 w-16 h-16 flex items-center justify-center rounded-lg group-hover:bg-amber-700 group-hover:text-white transition-colors">
-                    <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">{svc.icon}</svg>
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-slate-800">{svc.title}</h3>
-                  <p className="text-slate-600 leading-relaxed text-sm mb-5">{svc.desc}</p>
-                  <a href="#contact" className="inline-flex items-center text-amber-700 font-semibold text-sm hover:text-amber-800 transition-colors">
-                    Learn more <span className="ml-1">→</span>
-                  </a>
-                </div>
+                </a>
               ))}
             </div>
           </div>
