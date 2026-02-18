@@ -231,7 +231,7 @@ export default function App() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
                       </div>
-                      <span className="font-semibold text-lg">advisory@cadastremining.co.zm</span>
+                      <span className="font-semibold text-lg">conrad.bwalya3@gmail.com</span>
                     </div>
                     <div className="flex items-center gap-5 text-slate-700">
                       <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-md">
@@ -290,7 +290,7 @@ export default function App() {
               <span className="text-xl font-bold text-slate-900 tracking-tight">Cadastre Mining Compliance</span>
               <p className="text-slate-500 text-sm font-medium italic mt-1">Empowering operators with structured regulatory clarity.</p>
             </div>
-            <div className="text-slate-400 text-sm font-medium">&copy; 2024 Mining Compliance Advisory. All rights reserved.</div>
+            <div className="text-slate-400 text-sm font-medium">&copy; 2026 Mining Compliance Advisory. All rights reserved.</div>
             <div className="flex gap-8">
               <a href="https://www.linkedin.com/in/vabzoe" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-amber-700 font-semibold transition-colors">LinkedIn</a>
               <a href="#" className="text-slate-500 hover:text-amber-700 font-semibold transition-colors">Twitter / X</a>
