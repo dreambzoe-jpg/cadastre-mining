@@ -41,27 +41,26 @@ export default function RegulatoryAssistant() {
     setLoading(true);
 
     try {
-      const apiKey = process.env.ANTHROPIC_API_KEY;
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': apiKey || '',
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-calls': 'true',
         },
         body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 1024,
-          system: SYSTEM_PROMPT,
-          messages: newMessages.map((m) => ({ role: m.role, content: m.content })),
+          messages: newMessages,
+          systemPrompt: SYSTEM_PROMPT,
         }),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
       const data = await response.json();
-      const reply = data?.content?.[0]?.text || 'Sorry, I could not process that. Please try again.';
+      const reply = data.reply || 'Sorry, I could not process that. Please try again.';
       setMessages([...newMessages, { role: 'assistant', content: reply }]);
-    } catch {
+    } catch (error) {
+      console.error('Chat error:', error);
       setMessages([...newMessages, { role: 'assistant', content: 'Network error. Please check your connection and try again.' }]);
     } finally {
       setLoading(false);
