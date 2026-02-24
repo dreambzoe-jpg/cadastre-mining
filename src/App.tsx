@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import RegulatoryAssistant from './RegulatoryAssistant';
 import consultationImg from '/consultation.jpg';
 
+const FORMSPREE_URL = 'https://formspree.io/f/mwvnwgjl';
+
 export default function App() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   // Scroll fade-in observer
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -13,16 +17,42 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const btn = e.currentTarget.querySelector('button[type="submit"]') as HTMLButtonElement;
-    btn.textContent = '✓ Inquiry Sent!';
-    btn.classList.add('!bg-green-700');
-    setTimeout(() => {
-      btn.textContent = 'Send Inquiry';
-      btn.classList.remove('!bg-green-700');
-      (e.target as HTMLFormElement).reset();
-    }, 3000);
+    const form = e.currentTarget;
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+
+      if (res.ok) {
+        btn.textContent = '✓ Inquiry Sent!';
+        btn.classList.add('!bg-green-700');
+        form.reset();
+        setTimeout(() => {
+          btn.textContent = 'Send Inquiry';
+          btn.classList.remove('!bg-green-700');
+          btn.disabled = false;
+        }, 3000);
+      } else {
+        throw new Error('Send failed');
+      }
+    } catch {
+      btn.textContent = 'Failed — please try again';
+      btn.classList.add('!bg-red-700');
+      setTimeout(() => {
+        btn.textContent = 'Send Inquiry';
+        btn.classList.remove('!bg-red-700');
+        btn.disabled = false;
+      }, 3000);
+    }
   };
 
   return (
@@ -35,15 +65,59 @@ export default function App() {
             <div className="flex flex-col">
               <span className="text-xl font-bold tracking-tight text-slate-900">Cadastre Mining Compliance</span>
               <span className="text-xs uppercase tracking-widest text-amber-700 font-semibold">Strategic Advisory</span>
-              <a href="#contact" className="mt-2 bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-amber-800 transition-all shadow-lg shadow-slate-900/10 text-sm font-bold w-fit">
+            </div>
+            <div className="flex items-center gap-6">
+              <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                <a href="#specializations" className="hover:text-amber-700 transition-colors">Specializations</a>
+                <a href="#approach" className="hover:text-amber-700 transition-colors">Operational Approach</a>
+              </div>
+              <a href="#contact" className="hidden sm:inline-block bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-amber-800 transition-all shadow-lg shadow-slate-900/10 text-sm font-bold">
+                Get in Touch
+              </a>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-slate-100 py-4 space-y-1">
+              <a
+                href="#specializations"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-sm font-medium text-slate-600 hover:text-amber-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Specializations
+              </a>
+              <a
+                href="#approach"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-sm font-medium text-slate-600 hover:text-amber-700 rounded-lg hover:bg-slate-50 transition-colors"
+              >
+                Operational Approach
+              </a>
+              <a
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block mt-2 px-4 py-3 text-sm font-bold bg-slate-900 text-white rounded-lg hover:bg-amber-800 transition-colors text-center"
+              >
                 Get in Touch
               </a>
             </div>
-            <div className="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
-              <a href="#specializations" className="hover:text-amber-700 transition-colors">Specializations</a>
-              <a href="#approach" className="hover:text-amber-700 transition-colors">Operational Approach</a>
-            </div>
-          </div>
+          )}
         </div>
       </nav>
 
@@ -55,7 +129,7 @@ export default function App() {
             <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
               <div className="fade-in">
                 <div className="inline-block px-4 py-1.5 mb-8 text-xs font-semibold tracking-wider text-amber-800 uppercase bg-amber-50 rounded-full border border-amber-100">
-                  Independent &amp; Firm-Based Advisory
+                  Zambia Mining Regulatory Specialists
                 </div>
                 <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 leading-[1.1] mb-8">
                   Navigating Zambia's <br />
@@ -222,7 +296,7 @@ export default function App() {
                 <div className="p-12 lg:p-20 bg-amber-50/30 border-r border-slate-50">
                   <h2 className="text-4xl font-bold text-slate-900 mb-6">Let's Secure Your <span className="text-amber-700">License to Operate</span></h2>
                   <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-                    Ready to streamline your reporting workflows or need guidance on a complex cadastre amendment? Let's talk about how I can help your team reduce regulatory risk.
+                    Ready to streamline your reporting workflows or need guidance on a complex cadastre amendment? Let's talk about how we can help your team reduce regulatory risk.
                   </p>
                   <div className="space-y-6">
                     <div className="flex items-center gap-5 text-slate-700">
@@ -250,16 +324,16 @@ export default function App() {
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">Full Name</label>
-                        <input type="text" placeholder="John Doe" required className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all" />
+                        <input name="name" type="text" placeholder="John Doe" required className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all" />
                       </div>
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                        <input type="email" placeholder="john@company.com" required className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all" />
+                        <input name="email" type="email" placeholder="john@company.com" required className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-slate-700 mb-2">Service Interest</label>
-                      <select className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
+                      <select name="service" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all appearance-none cursor-pointer">
                         <option>Mining Cadastre Support</option>
                         <option>Statutory Reporting (MOSES)</option>
                         <option>Export Permit Facilitation</option>
@@ -269,9 +343,9 @@ export default function App() {
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-slate-700 mb-2">Message</label>
-                      <textarea rows={4} placeholder="How can I help your project?" required className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all" />
+                      <textarea name="message" rows={4} placeholder="How can we help your project?" required className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:bg-white focus:border-transparent outline-none transition-all" />
                     </div>
-                    <button type="submit" className="w-full py-5 bg-slate-900 text-white font-bold rounded-xl hover:bg-amber-800 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98]">
+                    <button type="submit" className="w-full py-5 bg-slate-900 text-white font-bold rounded-xl hover:bg-amber-800 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed">
                       Send Inquiry
                     </button>
                   </form>
